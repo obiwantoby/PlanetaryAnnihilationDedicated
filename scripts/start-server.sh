@@ -3,7 +3,7 @@ export LD_LIBRARY_PATH=/usr/lib
 export XDG_RUNTIME_DIR=/serverdata/serverfiles
 
 echo "---Preparing Server---"
-chmod -R ${DATA_PERM} ${DATA_DIR}
+chmod -R ${UID}:${GID} ${DATA_DIR}
 
 echo "---Starting Server---"
 if [ -z "${SERVER_PWD}" ]; then
