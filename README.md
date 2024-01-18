@@ -26,6 +26,13 @@ As of now, you can't download the PA Titans dedicated server using `+login anony
 ```console
 $ docker volume create steamcmd_login_volume # Location of login session
 ```
+Note if you use docker-compose - like I do, it affixes a prefix onto the volume name, so the above will be docker_steamcmd_login_volume.
+
+That is please create it with that in mind so it may be reused and defined in your compose file later. See the repo for an example compose file.
+
+```console
+$ docker volume create docker_steamcmd_login_volume # Location of login session
+```
 
 3. Activate the SteamCMD login session, if required enter your e-mail Steam Guard code (this will permanently save your login session in `steamcmd_login_volume`). Replace the following fields before executing the command:
 - [STEAMUSER] - steam username
