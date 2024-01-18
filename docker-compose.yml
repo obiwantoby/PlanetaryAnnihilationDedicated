@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+pa:
+    container_name: pa-dedicated
+    image: obiwantoby/pa-dedicated:latest
+    restart: "unless-stopped"
+    network_mode: host
+    volumes:
+      - <yourlocaldir>:/home/steam/PlanetaryAnnihilation-dedicated/
+      - steamcmd_login_volume:/home/steam/Steam
+    environment:
+      - STEAMUSER=yoursteamuser
+      - PA_SERVERNAME=servername
+      - PA_PW=serverpassword
+
+

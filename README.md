@@ -45,7 +45,7 @@ $ docker run -it --rm \
 $ mkdir -p $(pwd)/pa-data
 $ chmod 777 $(pwd)/pa-data # Makes sure the directory is writeable by the unprivileged container user
 $ docker run -d --net=host \
-    -v $(pwd)/cs2-data:/home/steam/PlanetaryAnnihilation-dedicated/ \
+    -v $(pwd)/pa-data:/home/steam/PlanetaryAnnihilation-dedicated/ \
     -v "steamcmd_login_volume:/home/steam/Steam" \
     --name=pa-dedicated -e STEAMUSER=[STEAMUSER] obiwantoby/pa-dedicated
 ```
