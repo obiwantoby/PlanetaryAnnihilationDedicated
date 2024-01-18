@@ -50,4 +50,10 @@ $ docker run -d --net=host \
     --name=pa-dedicated -e STEAMUSER=[STEAMUSER] ghcr.io/obiwantoby/pa-dedicated-server:latest
 ```
 
+
+# Credits
+
+This repository is based on [https://github.com/CM2Walki/CS2/](https://github.com/CM2Walki/CS2/) .<br/>
+This repository is inspired by [https://github.com/XanderXAJ/docker-planetary-annihilation-server/ ](https://github.com/XanderXAJ/docker-planetary-annihilation-server)
+
 **The container will automatically update the game on startup, so if there is a game update just restart the container.**
