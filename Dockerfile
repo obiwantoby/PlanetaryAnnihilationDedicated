@@ -24,4 +24,4 @@ ENV PA_SERVERNAME="New \"${STEAMAPP}\" Server" \
     PA_PW="changeme"
 
 # Set the script as the entry point
-ENTRYPOINT ["/start.sh"]
+CMD ["bash", "/entry.sh"]
