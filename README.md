@@ -33,7 +33,7 @@ $ docker volume create steamcmd_login_volume # Location of login session
 ```console
 $ docker run -it --rm \
     -v "steamcmd_login_volume:/home/steam/Steam" \
-    cm2network/steamcmd \
+    obiwantoby/pa-dedicated \
     bash /home/steam/steamcmd/steamcmd.sh +login [STEAMUSER] [ACCOUNTPASSWORD] +quit
 ```
 
@@ -47,7 +47,7 @@ $ chmod 777 $(pwd)/pa-data # Makes sure the directory is writeable by the unpriv
 $ docker run -d --net=host \
     -v $(pwd)/cs2-data:/home/steam/PlanetaryAnnihilation-dedicated/ \
     -v "steamcmd_login_volume:/home/steam/Steam" \
-    --name=pa-dedicated -e STEAMUSER=[STEAMUSER] cm2network/cs2
+    --name=pa-dedicated -e STEAMUSER=[STEAMUSER] obiwantoby/pa-dedicated
 ```
 
 **The container will automatically update the game on startup, so if there is a game update just restart the container.**
