@@ -17,5 +17,10 @@ RUN chmod +x "${STEAMAPPDIR}/server.sh"
 # PA Dependency
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
+ENV PA_SERVERNAME="New \"${STEAMAPP}\" Server" \
+    PA_PORT=27015 \
+    PA_MAXPLAYERS=10 \
+    PA_PW="changeme"
+
 # Set the script as the entry point
 ENTRYPOINT ["${HOMEDIR}/entry.sh"]
