@@ -10,6 +10,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build and push image
         run: |
-          docker login --username obiwantoby --password ${{ secrets..github/workflows/publish-ghcr.yaml }}
+          docker login --username obiwantoby --password ${{ secrets.DOCKERHUBPUSH }}
           docker build . -t obiwantoby/pa-dedicated-server:latest
           docker push obiwantoby/pa-dedicated-server:latest
