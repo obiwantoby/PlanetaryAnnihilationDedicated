@@ -11,7 +11,7 @@ bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
 cd "${STEAMAPPDIR}"
 
 # Start Server
-."${STEAMAPPDIR}"/server --port "${PA_PORT}" \
+./server --port "${PA_PORT}" \
 --headless \
 --allow-lan \
 --mt-enabled \
