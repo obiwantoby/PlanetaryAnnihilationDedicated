@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build and push image
-        run:
+        run: |
           docker login --username obiwantoby --password ${{ secrets.GH_PAT }} ghcr.io
           docker build . ghcr.io/obiwantoby/pa-dedicated-server:latest
           docker push ghcr.io/obiwantoby/pa-dedicated-server:latest
