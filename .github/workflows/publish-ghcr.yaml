@@ -7,14 +7,9 @@ jobs:
   build_and_publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to GitHub Container Registry
-      - uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: obiwantoby
-          password: ${{ ssecrets.GHCR_PAT }}
       - uses: actions/checkout@v4
       - name: Build and push image
-        run: |
+        run:
+          docker docker login --username obiwantoby --password $ {{ secrets.GH_PAT }} ghcr.io
           docker build . ghcr.io/obiwantoby/pa-dedicated-server:latest
           docker push ghcr.io/obiwantoby/pa-dedicated-server:latest
