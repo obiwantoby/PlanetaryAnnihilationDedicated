@@ -20,7 +20,7 @@ This Docker image contains the dedicated server of the game.
 
 As of now, you can't download the PA Titans dedicated server using `+login anonymous`.
 
-1. [Create a fresh Steam account](https://store.steampowered.com/join/) and add CS2 to its library or use your own. [Optional if you already have an account]<br/> 
+1. [Create a fresh Steam account](https://store.steampowered.com/join/) and add PA to its library or use your own. [Optional if you already have an account]<br/> 
 
 2. Create required named volume:
 ```console
