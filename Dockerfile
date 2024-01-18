@@ -22,6 +22,7 @@ RUN set -x \
   		ffmpeg \
 		libsm6 \
 		libxext6 \
+  		libcurl3-gnutls \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	# Add entry script
 	&& chmod +x "${HOMEDIR}/start.sh" \
