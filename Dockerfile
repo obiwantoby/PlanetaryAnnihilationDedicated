@@ -10,7 +10,7 @@ ENV STEAMAPP PlanetaryAnnihilation
 ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
 ENV STEAMUSER define
 
-COPY scripts/start.sh /start.sh
+COPY scripts/start.sh "${HOMEDIR}/start.sh"
 
 RUN set -x \
 	# Install, update & upgrade packages
@@ -25,7 +25,7 @@ RUN set -x \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	# Add entry script
 	&& chmod +x "/start.sh" \
-	&& chown -R "${USER}:${USER}" "/start.sh" "${STEAMAPPDIR}" \
+	&& chown -R "${USER}:${USER}" "${HOMEDIR}/start.sh" "${STEAMAPPDIR}" \
 	# Clean up
 	&& rm -rf /var/lib/apt/lists/* 
 	
@@ -44,4 +44,4 @@ USER ${USER}
 WORKDIR ${HOMEDIR}
 
 # Set the script as the entry point
-CMD ["bash", "/entry.sh"]
+CMD ["bash", "entry.sh"]
