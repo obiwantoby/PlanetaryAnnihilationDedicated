@@ -11,7 +11,7 @@ ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
 
 # Copy the startup script to the container
 COPY scripts/entry.sh "${HOMEDIR}/entry.sh"
-COPY scripts/server.sh "${STEAMAPPDIR}/server.sh"
+COPY scripts/start-server.sh "${STEAMAPPDIR}/server.sh"
 RUN chmod +x "${HOMEDIR}/entry.sh"
 RUN chmod +x "${STEAMAPPDIR}/server.sh"
 # PA Dependency
