@@ -1,5 +1,5 @@
 # PlanetaryAnnihilationDedicated
-Dedicated Server Setup for PA
+Dedicated Server Setup for Planetary Annihilation
 
 I wanted to use docker, as all the images were depreciated by now. However there are two challenges to making this 100% automated and available on the hub.
 
@@ -33,7 +33,7 @@ $ docker volume create steamcmd_login_volume # Location of login session
 ```console
 $ docker run -it --rm \
     -v "steamcmd_login_volume:/home/steam/Steam" \
-    obiwantoby/pa-dedicated \
+    ghcr.io/obiwantoby/pa-dedicated-server:latest \
     bash /home/steam/steamcmd/steamcmd.sh +login [STEAMUSER] [ACCOUNTPASSWORD] +quit
 ```
 
@@ -47,7 +47,7 @@ $ chmod 777 $(pwd)/pa-data # Makes sure the directory is writeable by the unpriv
 $ docker run -d --net=host \
     -v $(pwd)/pa-data:/home/steam/PlanetaryAnnihilation-dedicated/ \
     -v "steamcmd_login_volume:/home/steam/Steam" \
-    --name=pa-dedicated -e STEAMUSER=[STEAMUSER] obiwantoby/pa-dedicated
+    --name=pa-dedicated -e STEAMUSER=[STEAMUSER] ghcr.io/obiwantoby/pa-dedicated-server:latest
 ```
 
 **The container will automatically update the game on startup, so if there is a game update just restart the container.**
