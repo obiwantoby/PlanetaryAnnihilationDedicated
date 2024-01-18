@@ -12,7 +12,7 @@ ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
 # Copy the startup script to the container
 COPY scripts/start.sh /start.sh
 COPY scripts/start-server.sh "${STEAMAPPDIR}/server.sh"
-RUN chmod +x "${HOMEDIR}/start.sh"
+RUN chmod +x "/start.sh"
 RUN chmod +x "${STEAMAPPDIR}/server.sh"
 # PA Dependency
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
