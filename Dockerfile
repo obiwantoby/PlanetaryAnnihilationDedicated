@@ -10,6 +10,7 @@ ENV STEAMAPP PlanetaryAnnihilation
 ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
 ENV STEAMUSER define
 
+COPY scripts/start.sh /start.sh
 
 RUN set -x \
 	# Install, update & upgrade packages
@@ -23,14 +24,13 @@ RUN set -x \
         libxext6 \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	# Add entry script
-	&& chmod +x "${HOMEDIR}/entry.sh" \
-	&& chown -R "${USER}:${USER}" "${HOMEDIR}/entry.sh" "${STEAMAPPDIR}" \
+	&& chmod +x "/start.sh" \
+	&& chown -R "${USER}:${USER}" "/entry.sh" "${STEAMAPPDIR}" \
 
 
 
 # Copy the startup script to the container
-COPY scripts/start.sh /start.sh
-RUN chmod +x "/start.sh"
+
 
 ENV PA_SERVERNAME="New \"${STEAMAPP}\" Server" \
     PA_PORT=27015 \
