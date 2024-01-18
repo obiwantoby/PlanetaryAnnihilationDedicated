@@ -1,40 +1,27 @@
 #!/bin/bash
-echo "---Ensuring UID: ${UID} matches user---"
-usermod -u ${UID} ${USER}
-echo "---Ensuring GID: ${GID} matches user---"
-groupmod -g ${GID} ${USER} > /dev/null 2>&1 ||:
-usermod -g ${GID} ${USER}
-echo "---Setting umask to ${UMASK}---"
-umask ${UMASK}
+mkdir -p "${STEAMAPPDIR}" || true
 
-echo "---Checking for optional scripts---"
-cp -f /opt/custom/user.sh /opt/scripts/start-user.sh > /dev/null 2>&1 ||:
-cp -f /opt/scripts/user.sh /opt/scripts/start-user.sh > /dev/null 2>&1 ||:
+# Download Updates
 
-if [ -f /opt/scripts/start-user.sh ]; then
-    echo "---Found optional script, executing---"
-    chmod -f +x /opt/scripts/start-user.sh ||:
-    /opt/scripts/start-user.sh || echo "---Optional Script has thrown an Error---"
-else
-    echo "---No optional script found, continuing---"
-fi
+bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
+				+login "${STEAMUSER}" \
+				+app_update "${STEAMAPPID}" \
+				+quit
+# Switch to server directory
+cd "${STEAMAPPDIR}"
 
-echo "---Taking ownership of data...---"
-chown -R root:${GID} /opt/scripts
-chmod -R 750 /opt/scripts
-chown -R ${UID}:${GID} ${DATA_DIR}
-
-echo "---Starting...---"
-term_handler() {
-	kill -SIGTERM "$killpid"
-	wait "$killpid" -f 2>/dev/null
-	exit 143;
-}
-
-trap 'kill ${!}; term_handler' SIGTERM
-su ${USER} -c "/opt/scripts/start-server.sh" &
-killpid="$!"
-while true
-do
-	wait $killpid
-	exit 0;
+# Start Server
+./server --port "${PA_PORT}" \
+--headless \
+--allow-lan \
+--mt-enabled \
+--max-players "${PA_MAXPLAYERS}" \
+--max-spectators 5 \
+--spectators 5 \
+--server-password "${PA_PW}" \
+--empty-timeout 5 \
+--replay-filename "UTCTIMESTAMP" \
+--replay-timeout 180 \
+--gameover-timeout 360 \
+--server-name "${PA_SERVERNAME}" \
+--game-mode "PAExpansion1:config" \
