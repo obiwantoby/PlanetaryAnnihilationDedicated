@@ -1,4 +1,10 @@
 version: "3.8"
+
+# Reuse your volume that stores your steamcmd login , pleaes cache this first.
+volumes:
+  steamcmd_login_volume:
+    driver: local
+
 services:
 pa:
     container_name: pa-dedicated
