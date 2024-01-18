@@ -2,7 +2,7 @@ version: "3.8"
 services:
 pa:
     container_name: pa-dedicated
-    image: obiwantoby/pa-dedicated:latest
+    image: ghcr.io/obiwantoby/pa-dedicated-server:latest
     restart: "unless-stopped"
     network_mode: host
     volumes:
