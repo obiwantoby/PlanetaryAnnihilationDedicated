@@ -1,5 +1,5 @@
 # PlanetaryAnnihilationDedicated
-Dedicated Server Setup for PA
+Dedicated Server Setup for Planetary Annihilation
 
 I wanted to use docker, as all the images were depreciated by now. However there are two challenges to making this 100% automated and available on the hub.
 
