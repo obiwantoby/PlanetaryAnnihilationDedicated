@@ -1,0 +1,15 @@
+name: Docker Image for Planetary Annihilation image on Docker Hub
+
+on:
+  push
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and push image
+        run: |
+          docker login --username obiwantoby --password ${{ secrets..github/workflows/publish-ghcr.yaml }}
+          docker build . -t obiwantoby/pa-dedicated-server:latest
+          docker push obiwantoby/pa-dedicated-server:latest
