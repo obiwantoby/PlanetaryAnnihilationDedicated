@@ -24,7 +24,7 @@ RUN set -x \
 		libxext6 \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	# Add entry script
-	&& chmod +x "/start.sh" \
+	&& chmod +x "${HOMEDIR}/start.sh" \
 	&& chown -R "${USER}:${USER}" "${HOMEDIR}/start.sh" "${STEAMAPPDIR}" \
 	# Clean up
 	&& rm -rf /var/lib/apt/lists/* 
