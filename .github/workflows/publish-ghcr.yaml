@@ -1,0 +1,15 @@
+name: Docker Image for Planetary Annihilation image on GHCR
+
+on:
+  push
+
+jobs:
+  build_and_publish:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: action/checkout@v3
+    - name: Build and push image
+      run: |
+        docker login --username obiwantoby --password ${{secrets.GHCR_PAT}} ghcr.io
+        docker build . ghcr.io/obiwantoby/pa-dedicated-server:latest
+        docker push ghcr.io/obiwantoby/pa-dedicated-server:latest
