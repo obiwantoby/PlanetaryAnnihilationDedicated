@@ -11,5 +11,5 @@ jobs:
       - name: Build and push image
         run: |
           docker login --username obiwantoby --password ${{ secrets.GH_PAT }} ghcr.io
-          docker build . ghcr.io/obiwantoby/pa-dedicated-server:latest
+          docker build . -t ghcr.io/obiwantoby/pa-dedicated-server:latest
           docker push ghcr.io/obiwantoby/pa-dedicated-server:latest
