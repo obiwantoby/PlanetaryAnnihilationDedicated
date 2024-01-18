@@ -25,9 +25,9 @@ RUN set -x \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	# Add entry script
 	&& chmod +x "/start.sh" \
-	&& chown -R "${USER}:${USER}" "/entry.sh" "${STEAMAPPDIR}" \
+	&& chown -R "${USER}:${USER}" "/entry.sh" "${STEAMAPPDIR}"
 	# Clean up
-	&& rm -rf /var/lib/apt/lists/* 
+	
 
 
 # Copy the startup script to the container
