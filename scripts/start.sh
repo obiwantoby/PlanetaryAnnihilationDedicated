@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir -p "${STEAMAPPDIR}" || true
-
+bash chown -R :docker "${STEAMAPPDIR}"
 # Download Updates
 
 bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
