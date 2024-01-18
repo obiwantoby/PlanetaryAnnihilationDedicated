@@ -10,8 +10,8 @@ ENV STEAMAPP PlanetaryAnnihilation
 ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
 
 # Copy the startup script to the container
-COPY etc/entry.sh "${HOMEDIR}/entry.sh"
-COPY etc/server.sh "${STEAMAPPDIR}/server.sh"
+COPY scripts/entry.sh "${HOMEDIR}/entry.sh"
+COPY scripts/server.sh "${STEAMAPPDIR}/server.sh"
 RUN chmod +x "${HOMEDIR}/entry.sh"
 RUN chmod +x "${STEAMAPPDIR}/server.sh"
 # PA Dependency
