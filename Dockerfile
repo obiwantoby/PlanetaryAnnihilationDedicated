@@ -19,14 +19,12 @@ RUN set -x \
 		wget=1.21-1+deb11u1 \
 		ca-certificates=20210119 \
 		lib32z1=1:1.2.11.dfsg-2+deb11u2 \
-        	ffmpeg \
-        	libsm6 \
-        	libxext6 \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	# Add entry script
-	&& chmod +x "/start.sh" \
-	&& chown -R "${USER}:${USER}" "/entry.sh" "${STEAMAPPDIR}"
+	&& chmod +x "${HOMEDIR}/entry.sh" \
+	&& chown -R "${USER}:${USER}" "${HOMEDIR}/entry.sh" "${STEAMAPPDIR}" \
 	# Clean up
+	&& rm -rf /var/lib/apt/lists/* 
 	
 
 
