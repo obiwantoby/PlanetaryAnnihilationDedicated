@@ -39,6 +39,7 @@ ENV PA_SERVERNAME="New \"${STEAMAPP}\" Server" \
 
 USER ${USER}
 
+
 WORKDIR ${HOMEDIR}
 
 # Set the script as the entry point
