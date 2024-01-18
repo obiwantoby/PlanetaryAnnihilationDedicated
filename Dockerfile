@@ -8,7 +8,7 @@ LABEL maintainer="brandon@clinger.dev"
 ENV STEAMAPPID 386070
 ENV STEAMAPP PlanetaryAnnihilation
 ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
-ENV STEAMUSER
+ENV STEAMUSER define
 
 # Copy the startup script to the container
 COPY scripts/start.sh /start.sh
