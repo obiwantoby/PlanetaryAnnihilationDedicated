@@ -44,4 +44,4 @@ USER ${USER}
 WORKDIR ${HOMEDIR}
 
 # Set the script as the entry point
-CMD ["bash", "${HOMEDIR}/entry.sh"]
+CMD ["bash", "start.sh"]
