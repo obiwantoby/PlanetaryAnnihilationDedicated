@@ -12,7 +12,6 @@ ENV STEAMUSER define
 
 # Copy the startup script to the container
 COPY scripts/start.sh /start.sh
-COPY scripts/start-server.sh "${STEAMAPPDIR}/server.sh"
 RUN chmod +x "/start.sh"
 RUN chmod +x "${STEAMAPPDIR}/server.sh"
 # PA Dependency
