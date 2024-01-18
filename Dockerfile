@@ -21,8 +21,8 @@ RUN set -x \
 		lib32z1=1:1.2.11.dfsg-2+deb11u2 \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	# Add entry script
-	&& chmod +x "${HOMEDIR}/entry.sh" \
-	&& chown -R "${USER}:${USER}" "${HOMEDIR}/entry.sh" "${STEAMAPPDIR}" \
+	&& chmod +x "/start.sh" \
+	&& chown -R "${USER}:${USER}" "/start.sh" "${STEAMAPPDIR}" \
 	# Clean up
 	&& rm -rf /var/lib/apt/lists/* 
 	
