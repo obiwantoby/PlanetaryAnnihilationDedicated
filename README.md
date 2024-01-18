@@ -1,12 +1,20 @@
 # PlanetaryAnnihilationDedicated
 Dedicated Server Setup for PA
 
-https://github.com/ich777 had a a lot of work put into a dedicated server for PA, it has since been depreciated. A lot of these concepts are based off their work. 
-
 I wanted to use docker, as all the images were depreciated by now. However there are two challenges to making this 100% automated and available on the hub.
 
 1. Steamcmd will not work anonymously. You must login and persist that login.
 2. The PA Server requires a few dependencies from base images ffmpeg libsm6 libxext6.
+
+
+$ docker run -it --rm \
+    -v "steamcmd_login_volume:/home/steam/Steam" \
+    cm2network/steamcmd \
+    bash /home/steam/steamcmd/steamcmd.sh +login [STEAMUSER] [ACCOUNTPASSWORD] +quit
+
+
+
+--- Archive ---
 
 Sample Dockerfile could look like 
 
