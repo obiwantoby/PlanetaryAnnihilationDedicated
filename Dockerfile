@@ -1,12 +1,21 @@
-FROM debian
+###########################################################
+# Dockerfile that builds a PA:Titans Gameserver
+###########################################################
+FROM cm2network/steamcmd:root as build_stage
 
+LABEL maintainer="brandon@clinger.dev"
+
+ENV STEAMAPPID 386070
+ENV STEAMAPP PlanetaryAnnihilation
+ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
+
+# Copy the startup script to the container
+COPY etc/entry.sh "${HOMEDIR}/entry.sh"
+COPY etc/server.sh "${STEAMAPPDIR}/server.sh"
+RUN chmod +x "${HOMEDIR}/entry.sh"
+RUN chmod +x "${STEAMAPPDIR}/server.sh"
 # PA Dependency
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 
-# Copy the startup script to the container
-ADD /scripts/ /opt/scripts/
-# Make the script executable
-RUN chmod +x /usr/local/bin/start.sh
-
 # Set the script as the entry point
-ENTRYPOINT ["/opt/scripts/start.sh"]
+ENTRYPOINT ["${HOMEDIR}/entry.sh"]
