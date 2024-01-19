@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir -p "${STEAMAPPDIR}" || true
-chown -R 1000 "${STEAMAPPDIR}"
+
 # Download Updates
 
 bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
@@ -17,12 +17,14 @@ cd "${STEAMAPPDIR}"
 --mt-enabled \
 --max-players "${PA_MAXPLAYERS}" \
 --max-spectators 5 \
+--community-servers-url auto \
+--http \
 --spectators 5 \
 --server-password "${PA_PW}" \
 --empty-timeout 5 \
 --replay-filename "UTCTIMESTAMP" \
 --replay-timeout 180 \
 --gameover-timeout 360 \
---server-name "${PA_SERVERNAME}" \
+--server-name ${PA_SERVERNAME} \
 --game-mode "PAExpansion1:config" \
 --output-dir "${STEAMAPPDIR}/logs"
