@@ -1,10 +1,8 @@
 # PlanetaryAnnihilationDedicated
 Dedicated Server Setup for Planetary Annihilation
 
-I wanted to use docker, as all the images were depreciated by now. However there are two challenges to making this 100% automated and available on the hub.
-
-1. Steamcmd will not work anonymously. You must login and persist that login.
-
+I wanted to use docker, as all the images were depreciated by now. However there are challenges to making this 100% automated and available on the hub.
+Namely, steamcmd will not work anonymously. You must login and persist that login.
 
 # What is Planetary Annihilation?
 Planetary Annihilation Titans is a standalone expansion of the original Planetary Annihilation, a real-time strategy game. It was released on August 18, 2015, and adds 21 new units to the game, including five Titan-class units. It also adds multi-level terrain, a bounty mode, and an improved tutorial1. The game allows players to command armies with numbers in the thousands across multiple planets on land, sea, air, and even in orbit. It also features epic multiplayer, where up to ten friends can play in massive free-for-all and team-based matches.
@@ -56,8 +54,7 @@ $ docker run -d --net=host \
     -v "steamcmd_login_volume:/home/steam/Steam" \
     --name=pa-dedicated -e STEAMUSER=[STEAMUSER] ghcr.io/obiwantoby/pa-dedicated-server:latest
 ```
-
-
+Note you will want to make sure you set appropriate permissions for the folder. While 777 is the easy way - I suggest a chmod go+rwx and passing in the GID and PID of the user you wish to access the folder. Alternatively the container can install the binaries and everyone would be non the wiser.
 # Credits
 
 This repository is based on [https://github.com/CM2Walki/CS2/](https://github.com/CM2Walki/CS2/) .<br/>
