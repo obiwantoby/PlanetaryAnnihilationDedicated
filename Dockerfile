@@ -30,7 +30,6 @@ RUN set -x \
 	# Clean up
 	&& rm -rf /var/lib/apt/lists/* 
 	
-FROM build_stage AS bullseye-base
 
 ENV PA_SERVERNAME="New \"${STEAMAPP}\" Server" \
     PA_PORT=27015 \
