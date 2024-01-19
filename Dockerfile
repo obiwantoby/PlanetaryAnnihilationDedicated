@@ -30,10 +30,7 @@ RUN set -x \
 	# Clean up
 	&& rm -rf /var/lib/apt/lists/* 
 	
-
-
-# Copy the startup script to the container
-
+FROM build_stage AS bullseye-base
 
 ENV PA_SERVERNAME="New \"${STEAMAPP}\" Server" \
     PA_PORT=27015 \
@@ -41,6 +38,7 @@ ENV PA_SERVERNAME="New \"${STEAMAPP}\" Server" \
     PA_PW="changeme"
 
 USER ${USER}
+
 
 WORKDIR ${HOMEDIR}
 
