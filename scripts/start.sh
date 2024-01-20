@@ -25,6 +25,6 @@ cd "${STEAMAPPDIR}"
 --replay-filename "UTCTIMESTAMP" \
 --replay-timeout 180 \
 --gameover-timeout 360 \
---server-name ${PA_SERVERNAME} \
+--server-name "${PA_SERVERNAME}" \
 --game-mode "PAExpansion1:config" \
 --output-dir "${STEAMAPPDIR}/logs"
