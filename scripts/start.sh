@@ -1,12 +1,22 @@
 #!/bin/bash
 mkdir -p "${STEAMAPPDIR}" || true
 
-# Download Updates - Use anonymous login for PA Titans dedicated server
+# Download Updates - Try anonymous first, fallback to credentials if needed
 echo "Downloading Planetary Annihilation: Titans Dedicated Server..."
-bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
+
+if [ -n "${STEAM_USERNAME}" ] && [ -n "${STEAM_PASSWORD}" ]; then
+    echo "Using Steam credentials for download..."
+    bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
+				+login "${STEAM_USERNAME}" "${STEAM_PASSWORD}" \
+				+app_update "${STEAMAPPID}" validate \
+				+quit
+else
+    echo "Attempting anonymous download..."
+    bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
 				+login anonymous \
 				+app_update "${STEAMAPPID}" validate \
 				+quit
+fi
 
 # Check if download was successful
 if [ ! -d "${STEAMAPPDIR}" ]; then
