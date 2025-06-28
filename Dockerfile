@@ -2,16 +2,17 @@
 # Dockerfile that builds a PA:Titans Gameserver
 ###########################################################
 # Consider using 'latest' or a specific version like 'debian-11' if available for better stability
-FROM cm2network/steamcmd:latest as build_stage
+FROM cm2network/steamcmd:latest AS build_stage
 
 LABEL maintainer="brandon@clinger.dev"
 
-ENV STEAMAPPID 386070
-ENV STEAMAPP PlanetaryAnnihilation
-ENV STEAMAPPDIR "${HOMEDIR}/${STEAMAPP}-dedicated"
-ENV STEAMUSER define
+ENV STEAMAPPID=386070
+ENV STEAMAPP=PlanetaryAnnihilation
+ENV STEAMAPPDIR="${HOMEDIR}/${STEAMAPP}-dedicated"
+ENV STEAMUSER=define
 
-COPY scripts/start.sh "${HOMEDIR}/start.sh"
+# Switch to root to install packages
+USER root
 
 RUN set -x \
     # Enable multi-architecture support if the base image doesn't already
@@ -27,12 +28,15 @@ RUN set -x \
         libstdc++6:i386 \
         libncurses5:i386 \
         libtcmalloc-minimal4:i386 \
-    && mkdir -p "${STEAMAPPDIR}" \
-    # Add entry script
-    && chmod +x "${HOMEDIR}/start.sh" \
-    && chown -R "${USER}:${USER}" "${HOMEDIR}/start.sh" "${STEAMAPPDIR}" \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
+
+# Copy the start script and set up directories
+COPY scripts/start.sh "${HOMEDIR}/start.sh"
+RUN mkdir -p "${STEAMAPPDIR}" \
+    # Add entry script
+    && chmod +x "${HOMEDIR}/start.sh" \
+    && chown -R "${USER}:${USER}" "${HOMEDIR}/start.sh" "${STEAMAPPDIR}"
 
 ENV PA_SERVERNAME="New \"${STEAMAPP}\" Server" \
     PA_PORT=27015 \
