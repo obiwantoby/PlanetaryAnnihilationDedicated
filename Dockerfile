@@ -1,6 +1,7 @@
 ###########################################################
 # Dockerfile that builds a PA:Titans Gameserver
 ###########################################################
+# Consider using 'latest' or a specific version like 'debian-11' if available for better stability
 FROM cm2network/steamcmd:latest as build_stage
 
 LABEL maintainer="brandon@clinger.dev"
@@ -18,8 +19,8 @@ RUN set -x \
     && apt-get update \
     # Install essential 32-bit libraries for SteamCMD and libcurl4 (32-bit)
     && apt-get install -y --no-install-recommends --no-install-suggests \
-        wget=1.21-1+deb11u1 \
-        ca-certificates=20210119 \
+        wget \
+        ca-certificates \
         lib32z1 \
         libcurl4-gnutls-dev:i386 \
         libc6:i386 \
