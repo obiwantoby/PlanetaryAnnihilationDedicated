@@ -16,45 +16,113 @@ This Docker image contains the dedicated server of the game.
 
 **Initial one-time setup**
 
-As of now, you can't download the PA Titans dedicated server using `+login anonymous`.
+As of now, you can't download the PA Titans dedicated server using `+login anonymous`. You need to cache your Steam credentials first.
 
-1. [Create a fresh Steam account](https://store.steampowered.com/join/) and add PA to its library or use your own. [Optional if you already have an account]<br/> 
+### Quick Setup (Recommended)
 
-2. Create required named volume:
-```console
-$ docker volume create steamcmd_login_volume # Location of login session
-```
-Note if you use docker-compose - like I do, it affixes a prefix onto the volume name, so the above will be docker_steamcmd_login_volume.
-
-That is please create it with that in mind so it may be reused and defined in your compose file later. See the repo for an example compose file.
+Use the provided setup script to automate credential caching:
 
 ```console
-$ docker volume create docker_steamcmd_login_volume # Location of login session
+$ ./setup-credentials.sh
 ```
 
-3. Activate the SteamCMD login session, if required enter your e-mail Steam Guard code (this will permanently save your login session in `steamcmd_login_volume`). Replace the following fields before executing the command:
-- [STEAMUSER] - steam username
-- [ACCOUNTPASSWORD] - steam account password
+This script will:
+1. Create the required Docker volume
+2. Prompt for your Steam credentials
+3. Cache them securely in the volume
+4. Provide next steps
+
+### Manual Setup (Alternative)
+
+If you prefer to do the setup manually:
+
+### Step 1: Create the Steam credentials volume
+
+If you're using docker-compose (recommended), create the volume with the docker-compose prefix:
+
+```console
+$ docker volume create docker_steamcmd_login_volume
+```
+
+Or if you're using plain Docker commands:
+
+```console
+$ docker volume create steamcmd_login_volume
+```
+
+### Step 2: Cache your Steam credentials
+
+**Important:** You need a Steam account that owns PA Titans. You can use your main account or create a dedicated one.
+
+Replace `[STEAMUSER]` and `[ACCOUNTPASSWORD]` with your actual Steam credentials:
+
 ```console
 $ docker run -it --rm \
-    -v "steamcmd_login_volume:/home/steam/Steam" \
+    -v "docker_steamcmd_login_volume:/home/steam/Steam" \
     ghcr.io/obiwantoby/pa-dedicated-server:latest \
     bash /home/steam/steamcmd/steamcmd.sh +login [STEAMUSER] [ACCOUNTPASSWORD] +quit
 ```
 
-**Running a PA Titans dedicated server**
+If Steam Guard is enabled (recommended), you'll be prompted for your authentication code. This step will permanently save your login session in the volume.
 
-4. Run using a bind mount for data persistence on container recreation. Replace the following fields before executing the command:
-- [STEAMUSER] - steam username (no password required, if you completed step 1)
+### Step 3: Configure and run the server
+
+1. Clone or download this repository
+2. Either:
+   - **Option A:** Copy `.env.example` to `.env` and edit the values:
+     ```console
+     $ cp .env.example .env
+     $ nano .env  # or use your preferred editor
+     ```
+   - **Option B:** Edit the `docker-compose.yml` file directly and replace the placeholder values
+
+3. Create the data directory and set permissions:
+```console
+$ mkdir -p ./pa-data
+$ chmod 755 ./pa-data
+```
+
+4. Start the server:
+```console
+$ docker-compose up -d
+```
+
+**Running with plain Docker (alternative to docker-compose)**
+
+If you prefer to use plain Docker commands instead of docker-compose:
 ```console
 $ mkdir -p $(pwd)/pa-data
-$ chmod 777 $(pwd)/pa-data # Makes sure the directory is writeable by the unprivileged container user
+$ chmod 755 $(pwd)/pa-data
 $ docker run -d --net=host \
     -v $(pwd)/pa-data:/home/steam/PlanetaryAnnihilation-dedicated/ \
     -v "steamcmd_login_volume:/home/steam/Steam" \
-    --name=pa-dedicated -e STEAMUSER=[STEAMUSER] ghcr.io/obiwantoby/pa-dedicated-server:latest
+    --name=pa-dedicated \
+    -e STEAMUSER=[STEAMUSER] \
+    -e PA_SERVERNAME="My PA Server" \
+    -e PA_PW="changeme" \
+    ghcr.io/obiwantoby/pa-dedicated-server:latest
 ```
-Note you will want to make sure you set appropriate permissions for the folder. While 777 is the easy way - I suggest a chmod go+rwx and passing in the GID and PID of the user you wish to access the folder. Alternatively the container can install the binaries and everyone would be non the wiser.
+
+Replace `[STEAMUSER]` with your Steam username (same as used in the credential caching step).
+
+## Troubleshooting
+
+### "Steam login failed" error
+If you see a "Steam login failed" error, your cached credentials may have expired. Re-run Step 2 to refresh them.
+
+### Server not starting
+1. Check the logs: `docker-compose logs pa` or `docker logs pa-dedicated`
+2. Ensure the `pa-data` directory has correct permissions
+3. Verify your Steam account owns PA Titans
+4. Make sure the required ports are available (default: 27015)
+
+### Updating the server
+The container automatically updates the game on startup. To force an update, restart the container:
+```console
+$ docker-compose restart pa
+```
+
+**Note:** While `chmod 777` works, it's more secure to use `chmod 755` and ensure proper ownership. The container runs as an unprivileged user for security.
 # Credits
 
 This repository is based on [https://github.com/CM2Walki/CS2/](https://github.com/CM2Walki/CS2/) .<br/>

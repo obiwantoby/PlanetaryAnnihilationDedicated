@@ -1,21 +1,29 @@
 #!/bin/bash
 mkdir -p "${STEAMAPPDIR}" || true
 
-# Download Updates - Try anonymous first, fallback to credentials if needed
+# Download Updates - Use cached Steam credentials
 echo "Downloading Planetary Annihilation: Titans Dedicated Server..."
 
-if [ -n "${STEAM_USERNAME}" ] && [ -n "${STEAM_PASSWORD}" ]; then
-    echo "Using Steam credentials for download..."
-    bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
-				+login "${STEAM_USERNAME}" "${STEAM_PASSWORD}" \
-				+app_update "${STEAMAPPID}" validate \
-				+quit
-else
-    echo "Attempting anonymous download..."
-    bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
-				+login anonymous \
-				+app_update "${STEAMAPPID}" validate \
-				+quit
+# Check if we have a steamuser set (should be cached already)
+if [ -z "${STEAMUSER}" ]; then
+    echo "ERROR: STEAMUSER environment variable not set"
+    echo "You must first cache your Steam credentials using the initial setup steps"
+    exit 1
+fi
+
+# First try to use cached credentials with just the username
+echo "Attempting to use cached Steam credentials for user: ${STEAMUSER}"
+bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
+			+login "${STEAMUSER}" \
+			+app_update "${STEAMAPPID}" validate \
+			+quit
+
+# Check if the download succeeded
+if [ $? -ne 0 ]; then
+    echo "ERROR: Steam login failed. Your cached credentials may have expired."
+    echo "Please re-run the initial setup to cache your Steam credentials:"
+    echo "docker run -it --rm -v \"steamcmd_login_volume:/home/steam/Steam\" ghcr.io/obiwantoby/pa-dedicated-server:latest bash /home/steam/steamcmd/steamcmd.sh +login [STEAMUSER] [PASSWORD] +quit"
+    exit 1
 fi
 
 # Check if download was successful

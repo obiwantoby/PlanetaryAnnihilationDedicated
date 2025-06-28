@@ -9,7 +9,7 @@ LABEL maintainer="brandon@clinger.dev"
 ENV STEAMAPPID=386070
 ENV STEAMAPP=PlanetaryAnnihilation
 ENV STEAMAPPDIR="${HOMEDIR}/${STEAMAPP}-dedicated"
-ENV STEAMUSER=define
+ENV STEAMUSER=""
 
 # Switch to root to install packages
 USER root
@@ -37,11 +37,6 @@ RUN mkdir -p "${STEAMAPPDIR}" \
     # Add entry script
     && chmod +x "${HOMEDIR}/start.sh" \
     && chown -R "${USER}:${USER}" "${HOMEDIR}/start.sh" "${STEAMAPPDIR}"
-
-ENV PA_SERVERNAME="New \"${STEAMAPP}\" Server" \
-    PA_PORT=27015 \
-    PA_MAXPLAYERS=10 \
-    PA_PW="changeme"
 
 USER ${USER}
 
