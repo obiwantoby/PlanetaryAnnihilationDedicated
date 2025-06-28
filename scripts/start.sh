@@ -1,17 +1,40 @@
 #!/bin/bash
 mkdir -p "${STEAMAPPDIR}" || true
 
-# Download Updates
-
+# Download Updates - Use anonymous login for PA Titans dedicated server
+echo "Downloading Planetary Annihilation: Titans Dedicated Server..."
 bash "${STEAMCMDDIR}/steamcmd.sh" +force_install_dir "${STEAMAPPDIR}" \
-				+login "${STEAMUSER}" \
-				+app_update "${STEAMAPPID}" \
+				+login anonymous \
+				+app_update "${STEAMAPPID}" validate \
 				+quit
+
+# Check if download was successful
+if [ ! -d "${STEAMAPPDIR}" ]; then
+    echo "ERROR: Server download failed - directory does not exist"
+    exit 1
+fi
+
 # Switch to server directory
 cd "${STEAMAPPDIR}"
 
+# Find the correct server executable
+if [ -f "./PA" ]; then
+    SERVER_EXEC="./PA"
+elif [ -f "./bin_x64/PA" ]; then
+    SERVER_EXEC="./bin_x64/PA"
+elif [ -f "./server" ]; then
+    SERVER_EXEC="./server"
+else
+    echo "ERROR: Could not find PA server executable"
+    echo "Contents of ${STEAMAPPDIR}:"
+    ls -la
+    exit 1
+fi
+
+echo "Starting Planetary Annihilation: Titans server with executable: ${SERVER_EXEC}"
+
 # Start Server
-./server --port "${PA_PORT}" \
+${SERVER_EXEC} --port "${PA_PORT}" \
 --headless \
 --allow-lan \
 --mt-enabled \
