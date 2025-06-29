@@ -43,17 +43,18 @@ ls -la
 SERVER_EXEC=""
 
 # Common possible locations and names for PA server executable
+# Prioritize the most likely Linux location first
 POSSIBLE_EXECS=(
-    "./PA"
-    "./bin_x64/PA"
-    "./bin/PA"
-    "./server"
-    "./PA_server"
+    "./bin_x64/server"        # Most likely for Linux PA Titans
+    "./server"                # Fallback
+    "./PA"                    # Windows-style
+    "./bin_x64/PA"           # Alternative
+    "./bin/PA"               # Alternative
+    "./bin/server"           # Alternative
+    "./PA_server"            # Alternative
     "./planetary_annihilation"
     "./bin_x64/planetary_annihilation"
     "./bin/planetary_annihilation"
-    "./bin_x64/server"
-    "./bin/server"
 )
 
 echo "Searching for PA server executable..."

@@ -10,6 +10,7 @@ ENV STEAMAPPID=386070
 ENV STEAMAPP=PlanetaryAnnihilation
 ENV STEAMAPPDIR="${HOMEDIR}/${STEAMAPP}-dedicated"
 ENV STEAMUSER=""
+ENV STEAMCMDDIR="${HOMEDIR}/steamcmd"
 
 # Switch to root to install packages
 USER root
