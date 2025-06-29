@@ -26,6 +26,7 @@ RUN set -x \
         ca-certificates \
         lib32z1 \
         libcurl4-gnutls-dev:i386 \
+        libcurl3-gnutls:i386 \
         libc6:i386 \
         libstdc++6:i386 \
         libncurses5:i386 \
