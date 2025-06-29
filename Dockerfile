@@ -42,6 +42,10 @@ RUN set -x \
         libxrandr2:i386 \
         libxss1:i386 \
         libgconf-2-4:i386 \
+        libsdl2-2.0-0 \
+        libsdl2-2.0-0:i386 \
+        libsdl2-dev \
+        libsdl2-dev:i386 \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
 
