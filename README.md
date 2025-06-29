@@ -110,6 +110,18 @@ Replace `[STEAMUSER]` with your Steam username (same as used in the credential c
 ### "Steam login failed" error
 If you see a "Steam login failed" error, your cached credentials may have expired. Re-run Step 2 to refresh them.
 
+### "Could not find PA server executable" error
+If you see this error, it means the PA Titans files downloaded successfully but the server executable couldn't be located. This can happen if:
+
+1. **The PA installation structure changed**: The updated script will now search in multiple locations and show you what files were downloaded
+2. **Missing execute permissions**: The script will automatically try to fix this
+3. **Incomplete download**: Check the logs for any download errors
+
+To debug this issue:
+1. Check the container logs: `docker-compose logs pa`
+2. The logs will show the directory contents and search results
+3. If you see the files but the script still fails, you may need to manually identify the correct executable
+
 ### Server not starting
 1. Check the logs: `docker-compose logs pa` or `docker logs pa-dedicated`
 2. Ensure the `pa-data` directory has correct permissions

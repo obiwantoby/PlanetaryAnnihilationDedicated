@@ -35,17 +35,67 @@ fi
 # Switch to server directory
 cd "${STEAMAPPDIR}"
 
-# Find the correct server executable
-if [ -f "./PA" ]; then
-    SERVER_EXEC="./PA"
-elif [ -f "./bin_x64/PA" ]; then
-    SERVER_EXEC="./bin_x64/PA"
-elif [ -f "./server" ]; then
-    SERVER_EXEC="./server"
-else
+# Debug: Show what was actually downloaded
+echo "Contents of ${STEAMAPPDIR}:"
+ls -la
+
+# Look for the PA server executable in various possible locations
+SERVER_EXEC=""
+
+# Common possible locations and names for PA server executable
+POSSIBLE_EXECS=(
+    "./PA"
+    "./bin_x64/PA"
+    "./bin/PA"
+    "./server"
+    "./PA_server"
+    "./planetary_annihilation"
+    "./bin_x64/planetary_annihilation"
+    "./bin/planetary_annihilation"
+    "./bin_x64/server"
+    "./bin/server"
+)
+
+echo "Searching for PA server executable..."
+for exec_path in "${POSSIBLE_EXECS[@]}"; do
+    if [ -f "$exec_path" ] && [ -x "$exec_path" ]; then
+        SERVER_EXEC="$exec_path"
+        echo "Found executable at: $exec_path"
+        break
+    elif [ -f "$exec_path" ]; then
+        echo "Found file at $exec_path but it's not executable, making it executable..."
+        chmod +x "$exec_path"
+        SERVER_EXEC="$exec_path"
+        echo "Using executable at: $exec_path"
+        break
+    fi
+done
+
+# If still not found, try to find any executable files
+if [ -z "$SERVER_EXEC" ]; then
+    echo "Standard paths failed, searching for any executable files..."
+    find . -type f -executable -name "*PA*" -o -name "*server*" -o -name "*planetary*" | head -10
+    
+    # Look for files with common server patterns
+    for pattern in "PA" "server" "planetary"; do
+        found_exec=$(find . -type f -name "*${pattern}*" | head -1)
+        if [ -n "$found_exec" ] && [ -f "$found_exec" ]; then
+            echo "Trying executable: $found_exec"
+            chmod +x "$found_exec" 2>/dev/null || true
+            if [ -x "$found_exec" ]; then
+                SERVER_EXEC="$found_exec"
+                echo "Using executable: $found_exec"
+                break
+            fi
+        fi
+    done
+fi
+
+if [ -z "$SERVER_EXEC" ]; then
     echo "ERROR: Could not find PA server executable"
-    echo "Contents of ${STEAMAPPDIR}:"
-    ls -la
+    echo "Directory structure:"
+    find . -type f -name "*" | head -20
+    echo "Please check the PA Titans installation or report this issue."
     exit 1
 fi
 
