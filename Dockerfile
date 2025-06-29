@@ -20,6 +20,7 @@ RUN set -x \
     && dpkg --add-architecture i386 \
     && apt-get update \
     # Install essential 32-bit libraries for SteamCMD and libcurl4 (32-bit)
+    # Also install OpenGL libraries required by PA server
     && apt-get install -y --no-install-recommends --no-install-suggests \
         wget \
         ca-certificates \
@@ -29,6 +30,13 @@ RUN set -x \
         libstdc++6:i386 \
         libncurses5:i386 \
         libtcmalloc-minimal4:i386 \
+        libgl1-mesa-glx \
+        libgl1-mesa-dri \
+        libgl1:i386 \
+        libglx0:i386 \
+        libxrandr2:i386 \
+        libxss1:i386 \
+        libgconf-2-4:i386 \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
 
