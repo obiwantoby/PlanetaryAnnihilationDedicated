@@ -27,6 +27,10 @@ RUN set -x \
         lib32z1 \
         libcurl4-gnutls-dev:i386 \
         libcurl3-gnutls:i386 \
+        libcurl4:i386 \
+        libcurl4-gnutls-dev \
+        libcurl3-gnutls \
+        libcurl4 \
         libc6:i386 \
         libstdc++6:i386 \
         libncurses5:i386 \
