@@ -1,0 +1,26 @@
+version: "3.8"
+
+# Reuse your volume that stores your steamcmd login, please cache this first.
+volumes:
+  steamcmd_login_volume:
+    driver: local
+
+services:
+  pa:
+    container_name: pa-dedicated
+    image: ghcr.io/obiwantoby/pa-dedicated-server:latest
+    restart: "unless-stopped"
+    network_mode: host
+    volumes:
+      - ./pa-data:/home/steam/PlanetaryAnnihilation-dedicated/
+      - steamcmd_login_volume:/home/steam/Steam
+      - /data/rustengine/target/release/libferrisnet_rust_core.so:/opt/ferrisnet/libferrisnet_rust_core.so:ro  # FerrisNet performance hooks
+    environment:
+      - STEAMUSER=${STEAMUSER:-your_steam_username_here}    # Replace with your Steam username
+      - PA_SERVERNAME=${PA_SERVERNAME:-My PA Titans Server} # Replace with your desired server name
+      - PA_PW=${PA_PW:-changeme}                            # Replace with your desired server password
+      - PA_PORT=${PA_PORT:-27015}                           # Game port (change if needed)
+      - PA_MAXPLAYERS=${PA_MAXPLAYERS:-10}                  # Maximum players (change if needed)
+      - ENABLE_FERRISNET=${ENABLE_FERRISNET:-true}                # Enable FerrisNet performance hooks (true/false)
+
+

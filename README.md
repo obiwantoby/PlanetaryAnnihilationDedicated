@@ -4,7 +4,7 @@ Dedicated Server Setup for Planetary Annihilation with Optional  Performance Opt
 Docker-based dedicated server for PA Titans with **optional ~4x performance improvement** through Rust Core hooks.
 
 **Quick Links:**
-- [🚀 SkyNet Quick Start Guide](SKYNET_QUICKSTART.md) - Get started with performance optimization
+- [🚀 FerrisNet Quick Start Guide](FERRISNET_QUICKSTART.md) - Get started with performance optimization
 - [Standard Setup](#how-to-use-this-image) - Basic server setup without optimization
 
 ## Why Docker?
@@ -105,20 +105,20 @@ $ chmod 755 $(pwd)/pa-data
 $ docker run -d --net=host \
     -v $(pwd)/pa-data:/home/steam/PlanetaryAnnihilation-dedicated/ \
     -v "steamcmd_login_volume:/home/steam/Steam" \
-    -v /data/rustengine/target/release/libskynet_rust_core.so:/opt/skynet/libskynet_rust_core.so:ro \
+    -v /data/rustengine/target/release/libferrisnet_rust_core.so:/opt/ferrisnet/libferrisnet_rust_core.so:ro \
     --name=pa-dedicated \
     -e STEAMUSER=[STEAMUSER] \
     -e PA_SERVERNAME="My PA Server" \
     -e PA_PW="changeme" \
-    -e ENABLE_SKYNET=true \
+    -e ENABLE_FERRISNET=true \
     ghcr.io/obiwantoby/pa-dedicated-server:latest
 ```
 
 Replace `[STEAMUSER]` with your Steam username (same as used in the credential caching step).
 
-## 🚀 SkyNet Performance Optimization (Optional but Recommended)
+## 🚀 FerrisNet Performance Optimization (Optional but Recommended)
 
-This server includes support for **SkyNet Rust Core**, a high-performance optimization library that provides **~4x performance improvement** through:
+This server includes support for **FerrisNet Rust Core**, a high-performance optimization library that provides **~4x performance improvement** through:
 
 - **SDL2 overhead elimination**: 97% → <1% CPU
 - **Profiler system disabled**: ~50% → 0% CPU
@@ -126,42 +126,42 @@ This server includes support for **SkyNet Rust Core**, a high-performance optimi
 - **SIMD collision detection**: 3-4x faster spatial queries
 - **12 worker threads fully utilized** (previously idle)
 
-### Enabling SkyNet Hooks
+### Enabling FerrisNet Hooks
 
 **Option 1: Using docker-compose (Recommended)**
 
-The `docker-compose.yml` is already configured to use SkyNet hooks by default. The library is mounted from `/data/rustengine/target/release/libskynet_rust_core.so`.
+The `docker-compose.yml` is already configured to use FerrisNet hooks by default. The library is mounted from `/data/rustengine/target/release/libferrisnet_rust_core.so`.
 
 To enable/disable:
 ```yaml
 environment:
-  - ENABLE_SKYNET=true  # Set to 'false' to disable
+  - ENABLE_FERRISNET=true  # Set to 'false' to disable
 ```
 
-**Option 2: Build SkyNet from source**
+**Option 2: Build FerrisNet from source**
 
 If the pre-compiled library isn't available, you can build it:
 
 ```console
 $ cd /data
-$ git clone https://github.com/yourusername/skynet-rust-core.git rustengine
+$ git clone https://github.com/yourusername/ferrisnet-rust-core.git rustengine
 $ cd rustengine
 $ cargo build --release
 ```
 
-The compiled library will be at `/data/rustengine/target/release/libskynet_rust_core.so`.
+The compiled library will be at `/data/rustengine/target/release/libferrisnet_rust_core.so`.
 
-**Option 3: Disable SkyNet**
+**Option 3: Disable FerrisNet**
 
 To run without performance hooks:
 ```yaml
 environment:
-  - ENABLE_SKYNET=false
+  - ENABLE_FERRISNET=false
 ```
 
 Or simply remove the volume mount for the library in `docker-compose.yml`.
 
-### SkyNet Performance Impact
+### FerrisNet Performance Impact
 
 **Before Optimization:**
 - MainThread: 97% SDL2 event loop, 2% game logic
@@ -175,22 +175,22 @@ Or simply remove the volume mount for the library in `docker-compose.yml`.
 
 ### Verification
 
-Check the container logs to verify SkyNet is active:
+Check the container logs to verify FerrisNet is active:
 ```console
-$ docker-compose logs pa | grep SkyNet
+$ docker-compose logs pa | grep FerrisNet
 ```
 
 You should see:
 ```
 ╔═══════════════════════════════════════════════════════╗
-║   🚀 SkyNet Performance Hooks ENABLED                 ║
+║   🚀 FerrisNet Performance Hooks ENABLED                 ║
 ║   Expected performance: ~4x improvement              ║
 ╚═══════════════════════════════════════════════════════╝
 ```
 
 ### Advanced Configuration
 
-For advanced SkyNet configuration, create a `config.toml` in the `pa-data` directory:
+For advanced FerrisNet configuration, create a `config.toml` in the `pa-data` directory:
 
 ```toml
 [hooks]
@@ -201,10 +201,10 @@ enable_network_hooks = true
 
 [logging]
 log_level = "info"
-log_file = "/tmp/skynet_ai.log"
+log_file = "/tmp/ferrisnet_ai.log"
 ```
 
-See the [SkyNet Rust Core documentation](https://github.com/yourusername/skynet-rust-core) for more details.
+See the [FerrisNet Rust Core documentation](https://github.com/yourusername/ferrisnet-rust-core) for more details.
 
 ## Troubleshooting
 
