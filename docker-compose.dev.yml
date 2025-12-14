@@ -1,0 +1,11 @@
+version: "3.8"
+
+# Development override for local builds
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+
+services:
+  pa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pa-dedicated-server:local

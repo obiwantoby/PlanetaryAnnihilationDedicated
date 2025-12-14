@@ -8,7 +8,17 @@ volumes:
 services:
   pa:
     container_name: pa-dedicated
+
+    # Option 1: Use pre-built image from GitHub Container Registry (recommended)
+    # Automatically built by GitHub Actions on every push to main
     image: ghcr.io/obiwantoby/pa-dedicated-server:latest
+
+    # Option 2: Build locally (uncomment lines below and comment out the image line above)
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    # image: pa-dedicated-server:local
+
     restart: "unless-stopped"
     network_mode: host
     volumes:

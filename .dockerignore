@@ -1,0 +1,30 @@
+# Git files
+.git
+.gitignore
+
+# Documentation
+README.md
+FERRISNET_QUICKSTART.md
+*.md
+
+# Environment files
+.env
+.env.local
+
+# Server data (should be mounted as volume)
+pa-data/
+
+# Docker files
+docker-compose.yml
+.dockerignore
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
