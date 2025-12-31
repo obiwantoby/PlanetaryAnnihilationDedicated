@@ -19,6 +19,15 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Vulkan support for wgpu GPU acceleration (FerrisNet)
+# Provides both hardware GPU support and software fallback (lavapipe)
+RUN apt-get update && apt-get install -y \
+    libvulkan1 \
+    mesa-vulkan-drivers \
+    vulkan-tools \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set environment variables
 ENV STEAMAPPID=386070
 ENV STEAMAPP=pa
