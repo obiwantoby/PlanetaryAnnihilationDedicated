@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y \
 # Set environment variables
 ENV STEAMAPPID=386070
 ENV STEAMAPP=pa
-ENV STEAMAPPDIR="${HOMEDIR}/${STEAMAPP}-dedicated"
+ENV STEAMAPPDIR="${HOMEDIR}/pa-dedicated"
 ENV DLURL=https://media.steampowered.com
 ENV ENABLE_FERRISNET=false
 
