@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  pa-optimized:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pa-optimized
+    restart: unless-stopped
+
+    # CUSTOMIZE THESE PATHS FOR YOUR ENVIRONMENT
+    volumes:
+      # 1. Mount directory containing PA server binary:
+      #    Option A (BOLT-optimized): server_bolt3 + icudtl.dat + symlinks
+      #    Option B (Vanilla): server + icudtl.dat + symlinks
+      #    Symlinks needed: host/ and media/ -> /path/to/pa-data/
+      - /path/to/your/pa-server-directory:/opt/pa/bin:ro
+
+      # 2. Mount PA game data directory (for symlink resolution)
+      - /path/to/your/pa-data:/data/pa-data:ro
+
+      # 3. Logs (persistent, stays on host)
+      - ./logs:/opt/pa/logs
+
+    ports:
+      - "20545:20545/udp"
+      - "20546:20546/udp"
+
+    environment:
+      - PA_SERVER_NAME=My-PA-Server
+      - PA_PORT=20545
+      - PA_MAX_PLAYERS=10
+      - PA_GAME_MODE=PAExpansion1:lobby
+      # jemalloc tuning (built into image, no changes needed)
+      - MALLOC_CONF=narenas:8,tcache:true,dirty_decay_ms:10000
+
+    # Resource limits (monitor these)
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'      # Should only need ~0.4 (20% of 2 cores)
+          memory: 4G       # Should only need ~2.6 GB
+        reservations:
+          cpus: '0.5'
+          memory: 2G
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "server_bolt3"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  default:
+    name: pa-network
