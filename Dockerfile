@@ -4,9 +4,9 @@ FROM cm2network/steamcmd:root
 
 LABEL maintainer="brandon.clinger@afs.com"
 LABEL description="PA Titans Dedicated Server with jemalloc (80%+ CPU reduction, 90%+ with BOLT)"
-LABEL version="1.0.0"
+LABEL version="1.1.0"
 
-# Install dependencies for PA + jemalloc build
+# Install dependencies for PA + jemalloc build + OLD libraries for vanilla PA
 RUN apt-get update && apt-get install -y \
     # PA Titans requirements
     lib32gcc-s1 \
@@ -31,8 +31,14 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Download and install OLD libraries that vanilla PA server needs
+# These aren't in modern repos, so we install from archives
+RUN cd /tmp \
+    && wget http://archive.ubuntu.com/ubuntu/pool/main/libi/libidn/libidn11_1.33-2.2ubuntu2_amd64.deb \
+    && dpkg -i libidn11_1.33-2.2ubuntu2_amd64.deb || true \
+    && rm libidn11_1.33-2.2ubuntu2_amd64.deb
+
 # Build and install jemalloc 5.3.0 (80%+ CPU reduction for PA server)
-# Works with ANY PA binary - provides massive performance improvement
 RUN cd /tmp \
     && wget -q https://github.com/jemalloc/jemalloc/releases/download/5.3.0/jemalloc-5.3.0.tar.bz2 \
     && tar xjf jemalloc-5.3.0.tar.bz2 \
@@ -51,7 +57,6 @@ RUN mkdir -p /opt/pa/bin \
     && chown -R ${USER}:${USER} /opt/pa
 
 # PA server binary provided via volume mount
-# Supports: vanilla 'server' or BOLT-optimized 'server_bolt3'
 VOLUME ["/opt/pa/bin"]
 
 # Server configuration
@@ -59,9 +64,7 @@ ENV PA_SERVER_NAME="PA-Docker-Server" \
     PA_PORT=20545 \
     PA_MAX_PLAYERS=10 \
     PA_GAME_MODE="PAExpansion1:lobby" \
-    # jemalloc configuration (fine-tuned for PA workload)
     MALLOC_CONF="narenas:8,tcache:true,dirty_decay_ms:10000,muzzy_decay_ms:10000" \
-    # LD_PRELOAD jemalloc for 80%+ CPU reduction
     LD_PRELOAD=/usr/local/lib/libjemalloc.so.2
 
 # Switch to non-root user
@@ -69,13 +72,11 @@ USER ${USER}
 
 WORKDIR /opt/pa
 
-# Health check - verify server is running (works with any PA binary)
+# Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD pgrep -f "server.*--headless" && echo "Healthy" || exit 1
 
 # Expose PA server ports
-# 20545 - Primary game port (UDP)
-# 20546-20555 - Additional ports for multiple instances
 EXPOSE 20545/udp 20546/udp 20547/udp
 
 # Entrypoint script
